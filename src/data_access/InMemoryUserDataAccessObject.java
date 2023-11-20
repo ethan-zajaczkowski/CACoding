@@ -1,8 +1,12 @@
 package data_access;
 
 import entity.User;
+import use_case.clear_users.ClearUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,8 +1,15 @@
 package view;
 
+import data_access.FileUserDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
+import entity.User;
+import entity.UserFactory;
+import interface_adapter.clear_users.ClearController;
+import interface_adapter.clear_users.ClearState;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
+import use_case.clear_users.ClearInteractor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDateTime;
 
 public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "sign up";
@@ -54,6 +62,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         //      a CLEAR_BUTTON_LABEL constant which is defined in the SignupViewModel class.
         //      You need to add this "clear" button to the "buttons" panel.
         clear = new JButton(SignupViewModel.CLEAR_BUTTON_LABEL);
+        buttons.add(clear);
 
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -79,7 +88,13 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-
+                        if (e.getSource().equals(clear)) {
+                            ClearState clearState = new ClearState();
+                            String message = clearState.execute();
+                            ClearController clearController = new ClearController();
+                            clearController.execute();
+                            JOptionPane.showMessageDialog(SignupView.this, message);
+                        }
                     }
                 }
         );
